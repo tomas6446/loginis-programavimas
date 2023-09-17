@@ -55,6 +55,7 @@ istekejusi(Moteris) :-
 
 % (38)
 % stos_i_informatika(Abiturientas) - Asmuo Abiturientas yra pakankamo (patys nuspręskite kokio) amžiaus ir domisi (mėgsta) informatika;
+% abiturientas(Vardas, Amžius, Megsta)
 abiturientas(tomas, 21, informatika).
 abiturientas(igor, 17, informatika).
 
