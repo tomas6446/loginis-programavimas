@@ -12,7 +12,7 @@ asmuo(romas, vyras, 50, pirtis).
 asmuo(stanislava, moteris, 51, pirtis).
 asmuo(julija, moteris, 28, knygos).
 asmuo(kristina, moteris, 61, siltnamis).
-asmuo(romasv, vyras, 62, autobusai).
+asmuo(romasv, vyras, 65, autobusai).
 asmuo(marija, moteris, 82, televizorius).
 
 % mama(Mama, Vaikas)
@@ -23,30 +23,30 @@ mama(ana, rolandas).
 mama(ana, tomas).
 mama(stanislava, julija).
 
-% pora(Vyras, Žmona) 
+% pora(Vyras, Žmona)
 pora(romasv, kristina).
 pora(petras, marija).
 pora(romas, stanislava).
 pora(andrius, ana).
 
 % ar asmuo yra tevas
-tevas(Tevas, Vaikas) :- 
-    mama(Mama, Vaikas),         	% ar Vaikui yra Mama
-    pora(Tevas, Mama),          	% ar Tevas sudaro pora su Mama
-    asmuo(Tevas, vyras, _, _).  	% ar Tevas yra vyras
+tevas(Tevas, Vaikas) :-
+    mama(Mama, Vaikas),			% ar Vaikui yra Mama
+    pora(Tevas, Mama),			% ar Tevas sudaro pora su Mama
+    asmuo(Tevas, vyras, _, _).		% ar Tevas yra vyras
 
 % test
-% tevas(andrius, rolandas) 		% true
+% tevas(andrius, rolandas)		% true
 % tevas(andrius, tomas)			% true
 % tevas(romas, julija)			% true
 % tevas(romasv, ana)			% true
 
 % (26)
 % istekejusi(Istekejusi) - Asmuo Istekejusi yra ištekėjusi (moteris);
-istekejusi(Moteris) :- 
-    asmuo(Moteris, moteris, _, _),  		% ar Moteris yra moteris.
+istekejusi(Moteris) :-
+    asmuo(Moteris, moteris, _, _),		% ar Moteris yra moteris.
     asmuo(Vyras, vyras, _, _),		% ar Vyras yra vyras
-    pora(Vyras, Moteris),       	% ar Vyras, sudaro pora su Moteris.
+    pora(Vyras, Moteris),		% ar Vyras, sudaro pora su Moteris.
 % test
 % istekejusi(ana)			% true
 % istekejusi(stanislava)		% true
@@ -68,31 +68,21 @@ stos_i_informatika(Abiturientas) :-
 
 % (43)
 % dar_pagyvens(Asmuo) - Asmuo Asmuo mėgsta kurią nors iš sporto šakų arba yra dar nepensinio amžiaus (64 metai vyrams ir 63 metai moterims);
-% megsta_sporta(Vardas)
-megsta_sporta(marija).
 
 dar_pagyvens(Vardas) :-
-    megsta_sporta(Vardas).
-    
+    asmuo(Vardas, vyras, _, sportas) ;
+   (    asmuo(Vardas, vyras, Amzius, _),
+    Amzius < 64).
+
 dar_pagyvens(Vardas) :-
-    asmuo(Vardas, vyras, Amzius, _),
-    Amzius < 64.
-    
-dar_pagyvens(Vardas) :-
-    asmuo(Vardas, moteris, Amzius, _),
-    Amzius < 63. 
+    asmuo(Vardas, moteris, _, sportas) ;
+    (   asmuo(Vardas, moteris, Amzius, sportas),
+    Amzius < 63).
 % test
 % dar_pagyvens(marija)			% true
 % dar_pagyvens(tomas)			% true
 % dar_pagyvens(stanislava)		% true
 % dar_pagyvens(romasv)			% true
 
-:- initialization(main).
 
-main :- 
-	(   dar_pagyvens(marija)
-    ->  write('true'), nl
-    ;   write('false'), nl
-    ).
 
-	
