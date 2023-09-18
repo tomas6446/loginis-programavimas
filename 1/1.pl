@@ -44,8 +44,8 @@ tevas(Tevas, Vaikas) :-
 % (26)
 % istekejusi(Istekejusi) - Asmuo Istekejusi yra ištekėjusi (moteris);
 istekejusi(Moteris) :- 
-    asmuo(Moteris, moteris),  		% ar Moteris yra moteris.
-    asmuo(Vyras, vyras).		% ar Vyras yra vyras
+    asmuo(Moteris, moteris, _, _),  		% ar Moteris yra moteris.
+    asmuo(Vyras, vyras, _, _),		% ar Vyras yra vyras
     pora(Vyras, Moteris),       	% ar Vyras, sudaro pora su Moteris.
 % test
 % istekejusi(ana)			% true
@@ -86,3 +86,13 @@ dar_pagyvens(Vardas) :-
 % dar_pagyvens(tomas)			% true
 % dar_pagyvens(stanislava)		% true
 % dar_pagyvens(romasv)			% true
+
+:- initialization(main).
+
+main :- 
+	(   dar_pagyvens(marija)
+    ->  write('true'), nl
+    ;   write('false'), nl
+    ).
+
+	
