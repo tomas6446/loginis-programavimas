@@ -26,7 +26,7 @@ studentas(linas, 3).
 studentas(aurimas, 1).
 
 % studentas A yra vyresnis už to paties kurso studentą B
-vyresnis(egidujus, tomas).
+vyresnis(egidijus, tomas).
 vyresnis(tomas, marta).
 vyresnis(tomas, jonas).
 vyresnis(tomas, linas).
@@ -43,28 +43,29 @@ vyresnis(marta, jonas).
 vyresnis(marta, linas).
 vyresnis(jonas, linas).
 
-vyresnisInCourse(StudentoVardas1, StudentoVardas2) :-
+vyresnisKurse(StudentoVardas1, StudentoVardas2) :-
 	studentas(StudentoVardas1, Kursas),
 	studentas(StudentoVardas2, Kursas),
-	StudentoVardas1 \= StudentoVardas2,
-	vyresnis(StudentoVardas1, StudentoVardas2).
+    	StudentoVardas1 \= StudentoVardas2,
+    	vyresnis(StudentoVardas1, StudentoVardas2).
 
 yraVyresnis(StudentoVardas1, StudentoVardas2) :-
-    	vyresnisInCourse(StudentoVardas1, StudentoVardas2).
+    	vyresnisKurse(StudentoVardas1, StudentoVardas2), !.
+
 yraVyresnis(StudentoVardas1, StudentoVardas2) :-
-    	vyresnisInCourse(StudentoVardas1, X),
-    	yraVyresnis(X, StudentoVardas2).
+    	vyresnisKurse(StudentoVardas1, X),
+    	yraVyresnis(X, StudentoVardas2), !. 	% ! - kai suras valid solution prolog neieskos kitu 
     
 % Natūralieji skaičiai yra modeliuojami termais nul, s(nul), s(s(nul)),… (žr. paskaitos medžiagą). 
 % Apibrėžkite predikatą: pirmasis skaičius dalus antrajam.
-subtract(X, nul, X).		% atimties bazinė sąlyga 
+subtract(X, nul, X).				% atimties bazinė sąlyga 
 
 % Rekursinė atimties sąlyga
 % atimame po vieneta
 subtract(s(X), s(Y), Z) :-
     subtract(X, Y, Z).
     
-subtract(X, nul, X).        % atimties bazinė sąlyga 
+subtract(X, nul, X).        			% atimties bazinė sąlyga 
 
 % rekursinė atimties sąlyga
 % atimties po vieneta
@@ -76,7 +77,8 @@ dalus(X, Y) :-
     subtract(X, Y, Z), 
     X \= Z,           
     dalus(Z, Y). 
-    
+   
+% test
 % 6 / 2 dalus(s(s(s(s(s(s(nul)))))),s(s(nul))) -> true
 % 5 / 2 dalus(s(s(s(s(s(nul))))),s(s(nul))) -> false
 
