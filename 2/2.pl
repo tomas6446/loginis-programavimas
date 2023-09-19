@@ -15,26 +15,45 @@
 % rita), yraVyresnis(jonas, tadas) ir yraVyresnis(tadas, rita). Apibrėžkite predikatą:
 
 % studentas(Vardas, Kursas)
+studentas(egidijus, 4).
 studentas(tomas, 3).
 studentas(algis, 3).
 studentas(benas, 3).
-studentas(nikita, 2).
-studentas(petras, 2).
-studentas(jonas, 2).
-studentas(gabija, 1).
-studentas(migle, 1).
-studentas(rolandas, 4).
+studentas(artiom, 3).
+studentas(marta, 3).
+studentas(jonas, 3).
+studentas(linas, 3).
+studentas(aurimas, 1).
 
 % studentas A yra vyresnis už to paties kurso studentą B
-vyresnis(tomas, algis).
-vyresnis(algis, benas).
+vyresnis(egidujus, tomas).
+vyresnis(tomas, marta).
+vyresnis(tomas, jonas).
+vyresnis(tomas, linas).
+vyresnis(algis, marta).
+vyresnis(algis, jonas).
+vyresnis(algis, linas).
+vyresnis(benas, marta).
+vyresnis(benas, jonas).
+vyresnis(benas, linas).
+vyresnis(artiom, marta).
+vyresnis(artiom, jonas).
+vyresnis(artiom, linas).
+vyresnis(marta, jonas).
+vyresnis(marta, linas).
+vyresnis(jonas, linas).
+
+vyresnisInCourse(StudentoVardas1, StudentoVardas2) :-
+	studentas(StudentoVardas1, Kursas),
+	studentas(StudentoVardas2, Kursas),
+	StudentoVardas1 \= StudentoVardas2,
+	vyresnis(StudentoVardas1, StudentoVardas2).
 
 yraVyresnis(StudentoVardas1, StudentoVardas2) :-
-    	vyresnis(StudentoVardas1, StudentoVardas2).
+    	vyresnisInCourse(StudentoVardas1, StudentoVardas2).
 yraVyresnis(StudentoVardas1, StudentoVardas2) :-
-    	vyresnis(StudentoVardas1, X),
+    	vyresnisInCourse(StudentoVardas1, X),
     	yraVyresnis(X, StudentoVardas2).
-    
     
 % Natūralieji skaičiai yra modeliuojami termais nul, s(nul), s(s(nul)),… (žr. paskaitos medžiagą). 
 % Apibrėžkite predikatą: pirmasis skaičius dalus antrajam.
@@ -47,8 +66,8 @@ subtract(s(X), s(Y), Z) :-
     
 subtract(X, nul, X).        % atimties bazinė sąlyga 
 
-% Rekursinė atimties sąlyga
-% atimame po vieneta
+% rekursinė atimties sąlyga
+% atimties po vieneta
 subtract(s(X), s(Y), Z) :-
     subtract(X, Y, Z).
 
