@@ -33,8 +33,7 @@ iterpti([H|T], K, [H|R]) :-
 % ?- galiniai([a,b,c,d,e],3,R).
 % R = [c,d e].
 
-% Base case: Jei sarasas yra tuscias, rezultatas taip pat yra tuscias sarasas, 
-% nepriklausomai nuo K.
+% Base case: Jei sarasas yra tuscias, rezultatas taip pat yra tuscias sarasas, nepriklausomai nuo K.
 galiniai([], _, []).
 
 % Pagrindine taisykle: Pirmiausia apskaiciuojame saraso S ilgi, nustatome 
