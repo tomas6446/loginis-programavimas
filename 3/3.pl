@@ -22,7 +22,7 @@ iterpti([H1, H2|T], K, [H1, K, H2|T]) :- K > H1, K < H2.
 
 % Kitais atvejais, stumiames i prieki sarase ir ieskome tinkamos vietos iterpimui.
 iterpti([H|T], K, [H|R]) :-
-    iterpti(T, K, R).
+	iterpti(T, K, R).
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -40,23 +40,23 @@ galiniai([], _, []).
 % Pagrindine taisykle: Pirmiausia apskaiciuojame saraso S ilgi, nustatome 
 % pradzios pozicija Start, ir gauname saraso dalis nuo sios pozicijos.
 galiniai(S, K, R) :-
-    ilgis(S, Len),
-    Start is Len - K + 1,
-    nthtail(Start, S, R).
+	ilgis(S, Len),
+	Start is Len - K + 1,
+	nthtail(Start, S, R).
 
 % Pagalbine predikatas ilgis/2: Skaičiuoja saraso ilgi.
 ilgis([], 0).
 ilgis([_|T], Len) :-
-    ilgis(T, Len1),
-    Len is Len1 + 1.
+	ilgis(T, Len1),
+	Len is Len1 + 1.
 
 % Pagalbine predikatas nthtail/3: Jis grazina saraso dalis nuo N-to 
 % elemento.
 nthtail(1, L, L).
 nthtail(N, [_|T], R) :-
-    N > 1,
-    N1 is N - 1,
-    nthtail(N1, T, R).
+	N > 1,
+	N1 is N - 1,
+	nthtail(N1, T, R).
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -72,18 +72,18 @@ nesikartoja([], []).
 
 % Jei elemento nera likusioje saraso dalyje, pridedame ji prie rezultato.
 nesikartoja([H|T], [H|R]) :-
-    \+ member(H, T),
-    nesikartoja(T, R).
+	\+ member(H, T),
+	nesikartoja(T, R).
 
 % Jei elementas pasikartoja likusioje saraso dalyje, praleidziame ji.
 nesikartoja([H|T], R) :-
-    member(H, T),
-    nesikartoja(T, R).
+	member(H, T),
+	nesikartoja(T, R).
 
 % Pagalbine predikatas member/2: Tikrina, ar elementas yra sarase.
 member(X, [X|_]).
 member(X, [_|T]) :-
-    member(X, T).
+	member(X, T).
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -103,23 +103,23 @@ suma([], [], [1]) :- carry.
 % Jei vienas iš sąrašų yra baigęsis, laikome, kad trūkstami 
 % skaitmenys yra 0.
 suma([], [H2|T2], [R|T]) :-
-    retractall(carry),
-    Sum is H2,
-    (Sum >= 10 -> R is Sum - 10, asserta(carry) ; R = Sum),
-    suma([], T2, T).
+	retractall(carry),
+	Sum is H2,
+	(Sum >= 10 -> R is Sum - 10, asserta(carry) ; R = Sum),
+	suma([], T2, T).
 
 suma([H1|T1], [], [R|T]) :-
-    retractall(carry),
-    Sum is H1,
-    (Sum >= 10 -> R is Sum - 10, asserta(carry) ; R = Sum),
-    suma(T1, [], T).
+	retractall(carry),
+	Sum is H1,
+	(Sum >= 10 -> R is Sum - 10, asserta(carry) ; R = Sum),
+	suma(T1, [], T).
 
 % Pagrindinė suma
 suma([H1|T1], [H2|T2], [R|T]) :-
-    retractall(carry),
-    Sum is H1 + H2 + (carry -> 1 ; 0),
-    (Sum >= 10 -> R is Sum - 10, asserta(carry) ; R = Sum),
-    suma(T1, T2, T).
+	retractall(carry),
+	Sum is H1 + H2 + (carry -> 1 ; 0),
+	(Sum >= 10 -> R is Sum - 10, asserta(carry) ; R = Sum),
+	suma(T1, T2, T).
 
 % Dinaminė atminties predikatas skirtas saugoti perkėlimo  
 % informacijai.
