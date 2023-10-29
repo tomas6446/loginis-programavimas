@@ -93,7 +93,7 @@ member(X, [_|T]) :-
 % ?- suma([9,4,6,1,3,4],[2,8],Sum).
 % Sum = [9,4,6,1,6,2].
 
-% Abieju sarasu ilgiai yra 0, grazinama suma ir galimas perkelimas.
+% Abieju sarasu ilgiai yra 0, grazinama suma.
 suma([], [], 0, []).
 
 % Abieju sarasu ilgiai yra 0, bet yra perkelimas.
