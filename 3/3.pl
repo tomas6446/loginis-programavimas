@@ -80,9 +80,9 @@ nesikartoja([H|T], R) :-
 	nesikartoja(T, R).
 
 % Tikrina, ar elementas yra sarase.
-member(X, [X|_]).
+member(X, [X|_]). % base case randa X
 member(X, [_|T]) :-
-	member(X, T).
+	member(X, T). % praeinam pro sarašą
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -93,14 +93,13 @@ member(X, [_|T]) :-
 % ?- suma([9,4,6,1,3,4],[2,8],Sum).
 % Sum = [9,4,6,1,6,2].
 
-% Bazinis atvejis: Abieju sarasu ilgiai yra 0, grąžinama suma ir galimas perkėlimas.
+% Abieju sarasu ilgiai yra 0, grazinama suma ir galimas perkelimas.
 suma([], [], []).
 
-% Abieju sarasu ilgiai yra 0, bet yra perkėlimas.
+% Abieju sarasu ilgiai yra 0, bet yra perkelimas.
 suma([], [], [1]) :- carry.
 
-% Jei vienas iš sąrašų yra baigęsis, laikome, kad trūkstami 
-% skaitmenys yra 0.
+% Jei vienas is sarasu yra baigesis, laikome, kad trukstami skaitmenys yra 0.
 suma([], [H2|T2], [R|T]) :-
 	retractall(carry),
 	Sum is H2,
@@ -113,15 +112,14 @@ suma([H1|T1], [], [R|T]) :-
 	(Sum >= 10 -> R is Sum - 10, asserta(carry) ; R = Sum),
 	suma(T1, [], T).
 
-% Pagrindinė suma
+% Pagrindine suma
 suma([H1|T1], [H2|T2], [R|T]) :-
 	retractall(carry),
 	Sum is H1 + H2 + (carry -> 1 ; 0),
 	(Sum >= 10 -> R is Sum - 10, asserta(carry) ; R = Sum),
 	suma(T1, T2, T).
 
-% Dinaminė atminties predikatas skirtas saugoti perkėlimo  
-% informacijai.
+% Dinamine atminties predikatas skirtas saugoti perkelimo informacijai.
 :- dynamic carry/0.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
