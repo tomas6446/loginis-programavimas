@@ -74,12 +74,12 @@ nesikartoja([H|T], [H|R]) :-
 	\+ member(H, T),
 	nesikartoja(T, R).
 
-% Jei elementas pasikartoja likusioje saraso dalyje, praleidziame ji.
+% Jei elementas pasikartoja likusioje saraso dalyje, praleidziame ji
 nesikartoja([H|T], R) :-
 	member(H, T),
 	nesikartoja(T, R).
 
-% Pagalbine predikatas member/2: Tikrina, ar elementas yra sarase.
+% Tikrina, ar elementas yra sarase.
 member(X, [X|_]).
 member(X, [_|T]) :-
 	member(X, T).
