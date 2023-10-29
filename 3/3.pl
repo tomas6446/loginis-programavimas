@@ -94,34 +94,33 @@ member(X, [_|T]) :-
 % Sum = [9,4,6,1,6,2].
 
 % Abieju sarasu ilgiai yra 0, grazinama suma ir galimas perkelimas.
-suma([], [], []).
+suma([], [], 0, []).
 
 % Abieju sarasu ilgiai yra 0, bet yra perkelimas.
-suma([], [], [1]) :- carry.
+suma([], [], 1, [1]).
 
-% Jei vienas is sarasu yra baigesis, laikome, kad trukstami skaitmenys yra 0.
-suma([], [H2|T2], [R|T]) :-
-	retractall(carry),
-	Sum is H2,
-	(Sum >= 10 -> R is Sum - 10, asserta(carry) ; R = Sum),
-	suma([], T2, T).
+suma([], [H2|T2], Carry, [R|T]) :-
+	Sum is H2 + Carry,
+	(Sum >= 10 -> R is Sum - 10, NewCarry = 1 ; R = Sum, NewCarry = 0),
+	suma([], T2, NewCarry, T).
 
-suma([H1|T1], [], [R|T]) :-
-	retractall(carry),
-	Sum is H1,
-	(Sum >= 10 -> R is Sum - 10, asserta(carry) ; R = Sum),
-	suma(T1, [], T).
+suma([H1|T1], [], Carry, [R|T]) :-
+	Sum is H1 + Carry,
+	(Sum >= 10 -> R is Sum - 10, NewCarry = 1 ; R = Sum, NewCarry = 0),
+	suma(T1, [], NewCarry, T).
 
 % Pagrindine suma
-suma([H1|T1], [H2|T2], [R|T]) :-
-	retractall(carry),
-	Sum is H1 + H2 + (carry -> 1 ; 0),
-	(Sum >= 10 -> R is Sum - 10, asserta(carry) ; R = Sum),
-	suma(T1, T2, T).
+suma([H1|T1], [H2|T2], Carry, [R|T]) :-
+	Sum is H1 + H2 + Carry,
+	(Sum >= 10 -> R is Sum - 10, NewCarry = 1 ; R = Sum, NewCarry = 0),
+	suma(T1, T2, NewCarry, T).
 
-% Dinamine atminties predikatas skirtas saugoti perkelimo informacijai.
-:- dynamic carry/0.
-
+suma(S1, S2, Sum) :-
+	reverse(S1, RS1),
+	reverse(S2, RS2),
+	suma(RS1, RS2, 0, RSum),
+	reverse(RSum, Sum).
+    
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
