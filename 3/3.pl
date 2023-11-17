@@ -11,18 +11,23 @@
 % ?- iterpti([10,2,14,8,1],13,R).
 % R = [10,2,13,14,8,1].
 
-% Base case: Jei sarasas yra tuscias, iterpiame skaiciu i tuscia sarasa.
-iterpti([], K, [K]).
+% Jei sarasas yra tuscias, iterpiame skaiciu i tuscia sarasa.
+% iterpti([], K, [K]).
 
 % Jei K yra mazesnis uz pirma saraso elementa, iterpiame K pries sarasa.
-iterpti([H|T], K, [K, H|T]) :- K < H.
+% iterpti([H|T], K, [K, H|T]) :- K < H.
 
-% Jei K yra didesnis uz pirma, bet mazesnis uz antra saraso elementa, iterpiame K tarp ju.
-iterpti([H1, H2|T], K, [H1, K, H2|T]) :- K > H1, K < H2.
+% Jei K yra didesnis uz pirma, bet mazesnis uz antra, iterpiame K tarp ju.
+iterpti([H1, H2|T], K, [H1, K, H2|T]) :- 
+	K > H1, 
+	K < H2.
 
-% Kitais atvejais, stumiames i prieki sarase ir ieskome tinkamos vietos iterpimui.
+% Kitais atvejais ieskome tinkamos vietos iterpimui.
 iterpti([H|T], K, [H|R]) :-
 	iterpti(T, K, R).
+	
+last_el(X,[X]).
+last_el(X,[_|T]) :- last_el(X,T).
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -33,29 +38,26 @@ iterpti([H|T], K, [H|R]) :-
 % ?- galiniai([a,b,c,d,e],3,R).
 % R = [c,d e].
 
-% Base case: Jei sarasas yra tuscias, rezultatas taip pat yra tuscias sarasas, nepriklausomai nuo K.
+% Jei sarasas yra tuscias, rezultatas taip pat yra tuscias sarasas
 galiniai([], _, []).
 
-% Pagrindine taisykle: Pirmiausia apskaiciuojame saraso S ilgi, nustatome 
-% pradzios pozicija Start, ir gauname saraso dalis nuo sios pozicijos.
 galiniai(S, K, R) :-
-	ilgis(S, Len),
-	Start is Len - K + 1,
-	nthtail(Start, S, R).
+	ilgis(S, Len), 		% apskaiciuojame saraso S ilgi
+	Start is Len - K + 1, 	% nustatome pradzios pozicija Start
+	nthtail(Start, S, R).	% gauname saraso dalis nuo sios pozicijos
 
-% Pagalbine predikatas ilgis/2: Skaičiuoja saraso ilgi.
 ilgis([], 0).
 ilgis([_|T], Len) :-
 	ilgis(T, Len1),
 	Len is Len1 + 1.
 
-% Pagalbine predikatas nthtail/3: Jis grazina saraso dalis nuo N-to 
-% elemento.
+% Grazina saraso dalis nuo N-to elemento.
 nthtail(1, L, L).
 nthtail(N, [_|T], R) :-
 	N > 1,
 	N1 is N - 1,
-	nthtail(N1, T, R).
+	nthtail(N1, T, R),
+	!.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -66,18 +68,20 @@ nthtail(N, [_|T], R) :-
 % ?- nesikartoja([a,b,a,d],R).
 % R = [a,b,d].
 
-% Base case: Jei sarasas yra tuscias, rezultatas taip pat yra tuscias sarasas.
+% Jei sarasas yra tuscias, rezultatas taip pat yra tuscias sarasas.
 nesikartoja([], []).
 
 % Jei elemento nera likusioje saraso dalyje, pridedame ji prie rezultato.
 nesikartoja([H|T], [H|R]) :-
 	\+ member(H, T),
-	nesikartoja(T, R).
+	nesikartoja(T, R),
+	!.
 
 % Jei elementas pasikartoja likusioje saraso dalyje, praleidziame ji
 nesikartoja([H|T], R) :-
 	member(H, T),
-	nesikartoja(T, R).
+	nesikartoja(T, R),
+	!.
 
 % Tikrina, ar elementas yra sarase.
 member(X, [X|_]). % base case randa X
@@ -116,11 +120,21 @@ suma([H1|T1], [H2|T2], Carry, [R|T]) :-
 	suma(T1, T2, NewCarry, T).
 
 suma(S1, S2, Sum) :-
-	reverse(S1, RS1),
-	reverse(S2, RS2),
+	reverse_list(S1, RS1),
+	reverse_list(S2, RS2),
 	suma(RS1, RS2, 0, RSum),
-	reverse(RSum, Sum).
+	reverse_list(RSum, Sum),
+	!.
     
+reverse_list([], List, List).
+
+% Pradedam no Tail listo ir pridedam prie naujo listo rekursiskai
+reverse_list([Head|Tail], List, Reversed) :-
+	reverse_list(Tail, [Head|List], Reversed).
+
+reverse_list(List, Reversed) :-
+	reverse_list(List, [], Reversed).
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
