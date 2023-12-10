@@ -24,12 +24,12 @@ connected((N1, N2), Edges, NewEdges) :-
 
 % path(CurrentNode, EdgesLeft, PathSoFar, FinalPath).
 path(Node, EdgesLeft, PathSoFar, FinalPath) :-
-    traverse(Node, EdgesLeft, [Node|PathSoFar], FinalPath).
+    traverse(Node, EdgesLeft, [Node|PathSoFar], FinalPath),
+    !.
 
 traverse(_, [], Path, Path). % Daugiau nera poru pabaigiam darba
 traverse(CurrentNode, EdgesLeft, PathSoFar, FinalPath) :-
     connected((CurrentNode, NextNode), EdgesLeft, RemainingEdges), % Pasirinkam briauna
-    !,
     traverse(NextNode, RemainingEdges, [NextNode|PathSoFar], FinalPath). % Einam toliau
 
 % find_path(StartingNode, EdgeTuples, Path).
@@ -45,5 +45,10 @@ nodes_to_edges([Node1,Node2|Nodes], [(Node1,Node2)|Edges]) :-
     nodes_to_edges([Node2|Nodes], Edges).
 
 % Example query to find a path.
-% ?- find_path(b, [(a, b), (b, a), (b, c), (c, b), (c, d), (d, c), (d, a), (a, d), (b, d), (d, b)], Path), write(Path).
-% ?- find_path(a, [(a, b), (b, a), (b, c), (c, d), (d, c), (d, a), (b, d)], Path), write(Path).
+% ?- find_path(a, [(a, b), (b, d), (d, a), (d, e), (a, d)], Path), write(Path).
+% [(a,b),(b,d),(d,a),(a,d),(d,e)]
+
+
+% ?- find_path(a, [(a,b), (b, c), (c, e), (c, a), (a,d), (d, e)], Path), write(Path).
+% [(a,b),(b,c),(c,e),(e,d),(d,a),(a,c)]
+
